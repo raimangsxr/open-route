@@ -1,17 +1,17 @@
-<header class="header">
-  <div class="header-left">
-    <img src="assets/logo.svg" alt="Logo Open Route FR" class="logo" />
+<mat-toolbar color="primary" class="mat-elevation-z4">
+  <span class="header-left" style="display:flex;align-items:center;gap:1em;">
+    <img src="assets/logo.svg" alt="Logo Open Route FR" class="logo" style="height:40px;" />
     <span class="title">Open Route <span class="fr-badge">FR</span></span>
-  </div>
-  <div class="header-center">
+  </span>
+  <span class="header-center" style="flex:1;text-align:center;">
     <app-gpx-upload (gpxLoaded)="onGpxLoaded($event)"></app-gpx-upload>
-  </div>
-  <div class="header-right">
-    <span class="icon profile" title="Perfil">
-      <svg width="24" height="24" viewBox="0 0 24 24" fill="none"><circle cx="12" cy="8" r="4" fill="#fff"/><path d="M4 20c0-4 16-4 16 0" stroke="#fff" stroke-width="2"/></svg>
-    </span>
-    <span class="icon logout" title="Cerrar sesión" (click)="logout()">
-      <svg width="24" height="24" viewBox="0 0 24 24" fill="none"><path d="M16 17l5-5-5-5" stroke="#fff" stroke-width="2"/><path d="M21 12H9" stroke="#fff" stroke-width="2"/><rect x="3" y="4" width="6" height="16" rx="2" stroke="#fff" stroke-width="2"/></svg>
-    </span>
-  </div>
-</header>
+  </span>
+  <span class="header-right" style="display:flex;align-items:center;gap:1em;">
+    <button mat-icon-button color="accent" aria-label="Profile">
+      <mat-icon>account_circle</mat-icon>
+    </button>
+    <button mat-icon-button color="warn" aria-label="Logout" (click)="logout()">
+      <mat-icon>logout</mat-icon>
+    </button>
+  </span>
+</mat-toolbar>

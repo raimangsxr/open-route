@@ -1,5 +1,13 @@
-<div class="home-container">
-  <app-map [gpxData]="gpxData"></app-map>
-  <button *ngIf="gpxData" class="navigator-btn" routerLink="/navigator">Iniciar ruta</button>
-  <button *ngIf="gpxData" class="navigator-btn clear-btn" (click)="clearGpx()">Limpiar ruta</button>
+<div class="home-container" style="max-width:600px;margin:2em auto;">
+  <mat-card>
+    <app-map [gpxData]="gpxData"></app-map>
+    <div style="display:flex;gap:1em;justify-content:center;margin-top:2em;">
+      <button *ngIf="gpxData" mat-raised-button color="primary" routerLink="/navigator">
+        <mat-icon>navigation</mat-icon> Iniciar ruta
+      </button>
+      <button *ngIf="gpxData" mat-raised-button color="warn" (click)="clearGpx()">
+        <mat-icon>delete</mat-icon> Limpiar ruta
+      </button>
+    </div>
+  </mat-card>
 </div>

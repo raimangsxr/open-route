@@ -1,4 +1,14 @@
-<div class="map" #mapContainer></div>
-<button class="fullscreen-btn" (click)="goFullscreen()">Pantalla completa</button>
-<button class="stop-btn" (click)="stopNavigation()">Detener navegación</button>
-<div *ngIf="error" class="error">{{error}}</div>
+<div class="map" #mapContainer style="margin-bottom:2em;"></div>
+<div style="display:flex;gap:1em;justify-content:center;">
+  <button mat-raised-button color="primary" (click)="goFullscreen()">
+    <mat-icon>fullscreen</mat-icon> Pantalla completa
+  </button>
+  <button mat-raised-button color="warn" (click)="stopNavigation()">
+    <mat-icon>close</mat-icon> Detener navegación
+  </button>
+</div>
+<div *ngIf="error" class="error" style="margin-top:1em;">
+  <mat-card color="warn" style="background:#ffcdd2;color:#b71c1c;padding:1em;">
+    <mat-icon>error</mat-icon> {{error}}
+  </mat-card>
+</div>

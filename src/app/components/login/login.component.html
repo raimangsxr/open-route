@@ -1,9 +1,19 @@
-<div class="login-container">
-  <h2>Iniciar sesión</h2>
-  <form (ngSubmit)="onLogin()">
-    <input [(ngModel)]="username" name="username" placeholder="Usuario" required />
-    <input [(ngModel)]="password" name="password" type="password" placeholder="Contraseña" required />
-    <button type="submit">Entrar</button>
-  </form>
-  <div *ngIf="error" class="error">Usuario o contraseña incorrectos</div>
+<div class="login-container" style="max-width:350px;margin:80px auto;">
+  <mat-card>
+    <h2 style="text-align:center;margin-bottom:1em;">Sign in</h2>
+    <form (ngSubmit)="onLogin()" style="display:flex;flex-direction:column;gap:1em;">
+      <mat-form-field appearance="outline">
+        <mat-label>Username</mat-label>
+        <input matInput [(ngModel)]="username" name="username" required />
+      </mat-form-field>
+      <mat-form-field appearance="outline">
+        <mat-label>Password</mat-label>
+        <input matInput [(ngModel)]="password" name="password" type="password" required />
+      </mat-form-field>
+      <button mat-raised-button color="primary" type="submit">Login</button>
+    </form>
+    <mat-card *ngIf="error" style="background:#ffcdd2;color:#b71c1c;margin-top:1em;padding:0.5em;">
+      <mat-icon>error</mat-icon> Invalid username or password
+    </mat-card>
+  </mat-card>
 </div>
