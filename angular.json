@@ -3,7 +3,7 @@
   "version": 1,
   "newProjectRoot": "projects",
   "projects": {
-    "open-route-fr": {
+    "open-route": {
       "projectType": "application",
       "schematics": {
         "@schematics/angular:class": {
@@ -41,7 +41,7 @@
         "build": {
           "builder": "@angular-devkit/build-angular:application",
           "options": {
-            "outputPath": "dist/open-route-fr",
+            "outputPath": "dist/open-route",
             "index": "src/index.html",
             "browser": "src/main.ts",
             "polyfills": [
@@ -88,10 +88,10 @@
           "builder": "@angular-devkit/build-angular:dev-server",
           "configurations": {
             "production": {
-              "buildTarget": "open-route-fr:build:production"
+              "buildTarget": "open-route:build:production"
             },
             "development": {
-              "buildTarget": "open-route-fr:build:development"
+              "buildTarget": "open-route:build:development"
             }
           },
           "defaultConfiguration": "development"
@@ -99,7 +99,7 @@
         "extract-i18n": {
           "builder": "@angular-devkit/build-angular:extract-i18n",
           "options": {
-            "buildTarget": "open-route-fr:build"
+            "buildTarget": "open-route:build"
           }
         },
         "test": {

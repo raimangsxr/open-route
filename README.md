@@ -1,4 +1,4 @@
-# OpenRouteFr
+# OpenRoute
 
 This project was generated with [Angular CLI](https://github.com/angular/angular-cli) version 17.3.17.
 
@@ -57,11 +57,11 @@ To serve the application as an installable PWA with HTTPS:
 3. **Serve the app with HTTPS and SPA routing:**
    - **Recommended (high port, no sudo):**
      ```sh
-     npx http-server ./dist/open-route-fr/browser -S -C cert.pem -K key.pem -P https://localhost:4443 -p 4443
+     npx http-server ./dist/open-route/browser -S -C cert.pem -K key.pem -P https://localhost:4443 -p 4443
      ```
    - **Port 443 (requires sudo):**
      ```sh
-     sudo npx http-server ./dist/open-route-fr/browser -S -C cert.pem -K key.pem -P https://localhost:443 -p 443
+     sudo npx http-server ./dist/open-route/browser -S -C cert.pem -K key.pem -P https://localhost:443 -p 443
      ```
 
 4. **Open** `https://localhost:4443` (or the port you chose) in Chrome/Edge/Firefox.

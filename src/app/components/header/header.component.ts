@@ -1,3 +1,4 @@
+
 import { Component } from '@angular/core';
 import { Router } from '@angular/router';
 import { AuthService } from '../../services/auth.service';
@@ -26,5 +27,8 @@ export class HeaderComponent {
     this.auth.logout();
     this.gpxService.clear();
     this.router.navigate(['/login']);
+  }
+  goHome() {
+    this.router.navigate(['/']);
   }
 }

@@ -1,16 +1,16 @@
 <mat-toolbar color="primary" class="mat-elevation-z4">
   <span class="header-left" style="display:flex;align-items:center;gap:1em;">
-    <img src="assets/logo.svg" alt="Logo Open Route FR" class="logo" style="height:40px;" />
-    <span class="title">Open Route <span class="fr-badge">FR</span></span>
+    <img src="assets/logo.png" alt="Logo Open Route" class="logo" style="height:40px;width:40px;object-fit:contain;cursor:pointer;background:#fff;border-radius:8px;box-shadow:0 1px 6px #0002;" (click)="goHome()" />
+    <span class="title" style="cursor:pointer;" (click)="goHome()">Open Route</span>
   </span>
-  <span class="header-center" style="flex:1;text-align:center;">
+  <!-- <span class="header-center" style="flex:1;text-align:center;">
     <app-gpx-upload (gpxLoaded)="onGpxLoaded($event)"></app-gpx-upload>
-  </span>
+  </span> -->
   <span class="header-right" style="display:flex;align-items:center;gap:1em;">
-    <button mat-icon-button color="accent" aria-label="Profile">
+    <button mat-icon-button class="header-btn" aria-label="Profile">
       <mat-icon>account_circle</mat-icon>
     </button>
-    <button mat-icon-button color="warn" aria-label="Logout" (click)="logout()">
+    <button mat-icon-button class="header-btn" aria-label="Logout" (click)="logout()">
       <mat-icon>logout</mat-icon>
     </button>
   </span>
