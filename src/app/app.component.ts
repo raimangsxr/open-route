@@ -6,7 +6,7 @@ import { Component } from '@angular/core';
   styleUrl: './app.component.css'
 })
 export class AppComponent {
-  title = 'open-route-fr';
+  title = 'Open-Route';
   gpxData: string | null = null;
 
   onGpxLoaded(gpx: string) {

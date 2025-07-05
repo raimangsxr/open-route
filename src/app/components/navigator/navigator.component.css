@@ -1,0 +1,57 @@
+.map {
+  width: 100%;
+  height: 70vh;
+  border-radius: 12px;
+  box-shadow: 0 4px 16px #0002;
+  margin: 2em auto;
+  border: 2px solid #1976d2;
+}
+.fullscreen-btn {
+  margin: 1em auto 0 auto;
+  display: block;
+  background: #222;
+  color: #fff;
+  border: none;
+  border-radius: 6px;
+  padding: 0.7em 2em;
+  font-size: 1.1em;
+  cursor: pointer;
+}
+.stop-btn {
+  margin: 1em auto;
+  display: block;
+  background: #1976d2;
+  color: #fff;
+  border: none;
+  border-radius: 6px;
+  padding: 0.7em 2em;
+  font-size: 1.1em;
+  cursor: pointer;
+}
+.exit-fullscreen-btn-global {
+  position: fixed;
+  left: 50%;
+  bottom: 2em;
+  transform: translateX(-50%);
+  background: #c00;
+  color: #fff;
+  border: none;
+  border-radius: 6px;
+  padding: 0.7em 2em;
+  font-size: 1.1em;
+  cursor: pointer;
+  z-index: 2147483647;
+  box-shadow: 0 4px 16px #0008;
+  pointer-events: auto;
+  outline: 3px solid #fff;
+  outline-offset: -2px;
+  opacity: 0.98;
+  max-width: 90vw;
+  transition: opacity 0.2s;
+  display: block;
+}
+.error {
+  color: #c00;
+  text-align: center;
+  margin-top: 1em;
+}

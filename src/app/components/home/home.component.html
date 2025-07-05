@@ -1,0 +1,5 @@
+<div class="home-container">
+  <app-map [gpxData]="gpxData"></app-map>
+  <button *ngIf="gpxData" class="navigator-btn" routerLink="/navigator">Iniciar ruta</button>
+  <button *ngIf="gpxData" class="navigator-btn clear-btn" (click)="clearGpx()">Limpiar ruta</button>
+</div>

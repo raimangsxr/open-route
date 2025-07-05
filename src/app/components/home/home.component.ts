@@ -1,16 +1,10 @@
 import { Component, OnInit, OnDestroy } from '@angular/core';
-import { GpxService } from '../services/gpx.service';
+import { GpxService } from '../../services/gpx.service';
 import { Subscription } from 'rxjs';
 
 @Component({
   selector: 'app-home',
-  template: `
-    <div class="home-container">
-      <app-map [gpxData]="gpxData"></app-map>
-      <button *ngIf="gpxData" class="navigator-btn" routerLink="/navigator">Iniciar ruta</button>
-      <button *ngIf="gpxData" class="navigator-btn clear-btn" (click)="clearGpx()">Limpiar ruta</button>
-    </div>
-  `,
+  templateUrl: './home.component.html',
   styleUrls: ['./home.component.css']
 })
 export class HomeComponent implements OnInit, OnDestroy {

@@ -2,10 +2,7 @@ import { Component, EventEmitter, Output } from '@angular/core';
 
 @Component({
   selector: 'app-gpx-upload',
-  template: `
-    <input type="file" accept=".gpx" (change)="onFileSelected($event)" hidden #fileInput />
-    <button (click)="fileInput.click()" class="gpx-upload-btn">Subir GPX</button>
-  `,
+  templateUrl: './gpx-upload.component.html',
   styleUrls: ['./gpx-upload.component.css']
 })
 export class GpxUploadComponent {

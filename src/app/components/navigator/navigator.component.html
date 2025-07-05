@@ -1,0 +1,4 @@
+<div class="map" #mapContainer></div>
+<button class="fullscreen-btn" (click)="goFullscreen()">Pantalla completa</button>
+<button class="stop-btn" (click)="stopNavigation()">Detener navegación</button>
+<div *ngIf="error" class="error">{{error}}</div>

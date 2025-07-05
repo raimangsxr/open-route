@@ -2,10 +2,7 @@ import { Component, Input, ElementRef, ViewChild, OnChanges, SimpleChanges, Afte
 
 @Component({
   selector: 'app-map',
-  template: `
-    <div *ngIf="!gpxData" class="no-gpx">Sube un archivo GPX para ver la ruta en el mapa.</div>
-    <div *ngIf="gpxData" #mapContainer class="map"></div>
-  `,
+  templateUrl: './map.component.html',
   styleUrls: ['./map.component.css']
 })
 export class MapComponent implements OnChanges, AfterViewInit {

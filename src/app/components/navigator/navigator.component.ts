@@ -1,15 +1,10 @@
 import { Component, OnDestroy, OnInit } from '@angular/core';
 import { Router } from '@angular/router';
-import { GpxService } from '../services/gpx.service';
+import { GpxService } from '../../services/gpx.service';
 
 @Component({
   selector: 'app-navigator',
-  template: `
-    <div class="map" #mapContainer></div>
-    <button class="fullscreen-btn" (click)="goFullscreen()">Pantalla completa</button>
-    <button class="stop-btn" (click)="stopNavigation()">Detener navegación</button>
-    <div *ngIf="error" class="error">{{error}}</div>
-  `,
+  templateUrl: './navigator.component.html',
   styleUrls: ['./navigator.component.css']
 })
 export class NavigatorComponent implements OnInit, OnDestroy {

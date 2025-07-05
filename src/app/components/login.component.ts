@@ -15,12 +15,7 @@ import { AuthService } from '../services/auth.service';
       <div *ngIf="error" class="error">Usuario o contraseña incorrectos</div>
     </div>
   `,
-  styles: [`
-    .login-container { max-width: 300px; margin: 80px auto; padding: 2em; border-radius: 8px; background: #fff; box-shadow: 0 2px 8px #0001; }
-    input { display: block; width: 100%; margin-bottom: 1em; padding: 0.5em; }
-    button { width: 100%; padding: 0.7em; background: #1976d2; color: #fff; border: none; border-radius: 4px; }
-    .error { color: #d32f2f; margin-top: 1em; }
-  `]
+  styleUrls: ['./login.component.css']
 })
 export class LoginComponent {
   username = '';
