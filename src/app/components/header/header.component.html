@@ -1,13 +1,17 @@
 <header class="header">
   <div class="header-left">
-    <img src="assets/logo.svg" alt="Logo" class="logo" />
-    <span class="title">Open-Route-FR</span>
+    <img src="assets/logo.svg" alt="Logo Open Route FR" class="logo" />
+    <span class="title">Open Route <span class="fr-badge">FR</span></span>
   </div>
   <div class="header-center">
     <app-gpx-upload (gpxLoaded)="onGpxLoaded($event)"></app-gpx-upload>
   </div>
   <div class="header-right">
-    <span class="icon profile" title="Perfil">👤</span>
-    <span class="icon logout" title="Logout" (click)="logout()">🚪</span>
+    <span class="icon profile" title="Perfil">
+      <svg width="24" height="24" viewBox="0 0 24 24" fill="none"><circle cx="12" cy="8" r="4" fill="#fff"/><path d="M4 20c0-4 16-4 16 0" stroke="#fff" stroke-width="2"/></svg>
+    </span>
+    <span class="icon logout" title="Cerrar sesión" (click)="logout()">
+      <svg width="24" height="24" viewBox="0 0 24 24" fill="none"><path d="M16 17l5-5-5-5" stroke="#fff" stroke-width="2"/><path d="M21 12H9" stroke="#fff" stroke-width="2"/><rect x="3" y="4" width="6" height="16" rx="2" stroke="#fff" stroke-width="2"/></svg>
+    </span>
   </div>
 </header>
