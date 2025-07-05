@@ -8,13 +8,12 @@ import { AppRoutingModule } from './app-routing.module';
 import { AppComponent } from './app.component';
 
 import { HeaderComponent } from './components/header/header.component';
-import { SubheaderComponent } from './components/subheader/subheader.component';
 import { FooterComponent } from './components/footer/footer.component';
-import { LayoutComponent } from './components/layout/layout.component';
 import { LoginComponent } from './components/login/login.component';
 import { GpxUploadComponent } from './components/gpx-upload/gpx-upload.component';
 import { MapComponent } from './components/map/map.component';
-import { NavigatorComponent } from './components/navigator/navigator.component';
+import { RouteNavigatorComponent } from './components/route-navigator/route-navigator.component';
+import { RoutePrevisualizationComponent } from './components/route-previsualization/route-previsualization.component';
 import { HomeComponent } from './components/home/home.component';
 import { AuthService } from './services/auth.service';
 import { ServiceWorkerModule } from '@angular/service-worker';
@@ -28,14 +27,13 @@ import { provideAnimationsAsync } from '@angular/platform-browser/animations/asy
   declarations: [
     AppComponent,
     HeaderComponent,
-    SubheaderComponent,
     FooterComponent,
-    LayoutComponent,
     LoginComponent,
     GpxUploadComponent,
     MapComponent,
     HomeComponent,
-    NavigatorComponent,
+    RouteNavigatorComponent,
+    RoutePrevisualizationComponent,
   ],
   imports: [
     BrowserModule,

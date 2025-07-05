@@ -3,11 +3,11 @@ import { Router } from '@angular/router';
 import { GpxService } from '../../services/gpx.service';
 
 @Component({
-  selector: 'app-navigator',
-  templateUrl: './navigator.component.html',
-  styleUrls: ['./navigator.component.css']
+  selector: 'app-route-navigator',
+  templateUrl: './route-navigator.component.html',
+  styleUrls: ['./route-navigator.component.css']
 })
-export class NavigatorComponent implements OnInit, OnDestroy {
+export class RouteNavigatorComponent implements OnInit, OnDestroy {
   private heading: number = 0;
   private orientationListener: any;
   private map: any;

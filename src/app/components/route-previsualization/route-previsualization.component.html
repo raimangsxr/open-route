@@ -1,0 +1,18 @@
+<div class="route-previsualization-container" style="max-width:700px;margin:2em auto;">
+  <mat-card style="margin-bottom:2em;">
+    <h2>Route information</h2>
+    <div *ngIf="gpxInfo; else noGpx">
+      <div><strong>Name:</strong> {{gpxInfo.name || 'Unknown'}}</div>
+      <div><strong>Distance:</strong> {{gpxInfo.distance | number:'1.1-2'}} km</div>
+      <div><strong>Points:</strong> {{gpxInfo.points}}</div>
+      <div><strong>Start:</strong> {{gpxInfo.startLat}}, {{gpxInfo.startLon}}</div>
+      <div><strong>End:</strong> {{gpxInfo.endLat}}, {{gpxInfo.endLon}}</div>
+    </div>
+    <ng-template #noGpx>
+      <div>No GPX route loaded.</div>
+    </ng-template>
+  </mat-card>
+  <mat-card>
+    <app-map [gpxData]="gpxData"></app-map>
+  </mat-card>
+</div>

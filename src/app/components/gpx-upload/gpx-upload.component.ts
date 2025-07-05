@@ -1,4 +1,5 @@
 import { Component, EventEmitter, Output } from '@angular/core';
+import { Router } from '@angular/router';
 
 @Component({
   selector: 'app-gpx-upload',
@@ -8,6 +9,8 @@ import { Component, EventEmitter, Output } from '@angular/core';
 export class GpxUploadComponent {
   @Output() gpxLoaded = new EventEmitter<string>();
 
+  constructor(private router: Router) {}
+
   onFileSelected(event: Event) {
     const input = event.target as HTMLInputElement;
     if (input.files && input.files.length > 0) {
@@ -15,6 +18,7 @@ export class GpxUploadComponent {
       const reader = new FileReader();
       reader.onload = () => {
         this.gpxLoaded.emit(reader.result as string);
+        this.router.navigate(['/previsualization']);
       };
       reader.readAsText(file);
     }
