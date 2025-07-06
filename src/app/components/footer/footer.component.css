@@ -1,0 +1,49 @@
+.app-footer {
+  width: 100%;
+  background: transparent;
+  color: #888;
+  text-align: center;
+  font-size: 0.98em;
+  font-family: 'Roboto', 'Helvetica Neue', Arial, sans-serif;
+  padding: 0.7em 0 0.5em 0;
+  letter-spacing: 0.01em;
+  user-select: none;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
+
+.footer-text {
+  display: flex;
+  align-items: center;
+  gap: 0.4em;
+  opacity: 0.85;
+}
+
+.footer-label {
+  display: flex;
+  align-items: center;
+  gap: 0.3em;
+}
+
+.footer-icon {
+  font-size: 1.15em;
+  margin-right: 0.1em;
+  display: flex;
+  align-items: center;
+  vertical-align: middle;
+}
+
+.footer-heart {
+  font-size: 1.15em;
+  margin: 0 0.1em;
+  display: flex;
+  align-items: center;
+  vertical-align: middle;
+}
+
+.footer-author {
+  font-weight: 500;
+  color: #1976d2;
+  letter-spacing: 0.02em;
+}
