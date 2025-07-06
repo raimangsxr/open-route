@@ -1,3 +1,4 @@
+// ...existing code...
 import { Component, OnInit, OnDestroy } from '@angular/core';
 import { GpxService } from '../../services/gpx.service';
 import { Subscription } from 'rxjs';
@@ -26,5 +27,9 @@ export class HomeComponent implements OnInit, OnDestroy {
 
   clearGpx() {
     this.gpxService.clear();
+  }
+
+  onGpxLoaded(gpx: string) {
+    this.gpxService.setGpxData(gpx);
   }
 }

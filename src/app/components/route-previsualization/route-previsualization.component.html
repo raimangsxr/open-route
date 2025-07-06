@@ -1,18 +1,32 @@
-<div class="route-previsualization-container" style="max-width:700px;margin:2em auto;">
-  <mat-card style="margin-bottom:2em;">
-    <h2>Route information</h2>
-    <div *ngIf="gpxInfo; else noGpx">
-      <div><strong>Name:</strong> {{gpxInfo.name || 'Unknown'}}</div>
-      <div><strong>Distance:</strong> {{gpxInfo.distance | number:'1.1-2'}} km</div>
-      <div><strong>Points:</strong> {{gpxInfo.points}}</div>
-      <div><strong>Start:</strong> {{gpxInfo.startLat}}, {{gpxInfo.startLon}}</div>
-      <div><strong>End:</strong> {{gpxInfo.endLat}}, {{gpxInfo.endLon}}</div>
-    </div>
-    <ng-template #noGpx>
-      <div>No GPX route loaded.</div>
-    </ng-template>
-  </mat-card>
-  <mat-card>
+
+<div class="route-previsualization-container">
+  <div class="map-wrapper">
     <app-map [gpxData]="gpxData"></app-map>
-  </mat-card>
+  </div>
+  <div class="bottom-section">
+    <div class="route-info-center">
+      <div class="info-header">
+        <mat-icon color="primary">info</mat-icon>
+        <h2>Route information</h2>
+      </div>
+      <div *ngIf="gpxInfo; else noGpx" class="info-content">
+        <div class="info-row"><mat-icon>label</mat-icon> <span><strong>Name:</strong> {{gpxInfo.name || 'Unknown'}}</span></div>
+        <div class="info-row"><mat-icon>straighten</mat-icon> <span><strong>Distance:</strong> {{gpxInfo.distance | number:'1.1-2'}} km</span></div>
+        <div class="info-row"><mat-icon>landscape</mat-icon> <span><strong>Elevation gain:</strong> {{gpxInfo.elevationGain | number:'1.0-0'}} m</span></div>
+      </div>
+      <ng-template #noGpx>
+        <div class="info-row"><mat-icon>error_outline</mat-icon> <span>No GPX route loaded.</span></div>
+      </ng-template>
+      <div class="actions actions-center modern-actions">
+        <button mat-flat-button color="primary" class="action-btn mat-mdc-flat-button" routerLink="/navigator" [disabled]="!gpxData">
+          <mat-icon class="action-icon" aria-hidden="true">navigation</mat-icon>
+          <span class="action-label">Start navigation</span>
+        </button>
+        <button mat-flat-button color="warn" class="action-btn mat-mdc-flat-button" (click)="clearGpx()" [disabled]="!gpxData">
+          <mat-icon class="action-icon" aria-hidden="true">delete</mat-icon>
+          <span class="action-label">Clear route</span>
+        </button>
+      </div>
+    </div>
+  </div>
 </div>

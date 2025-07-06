@@ -1,7 +1,13 @@
-<div class="login-container" style="max-width:350px;margin:80px auto;">
-  <mat-card>
-    <h2 style="text-align:center;margin-bottom:1em;">Sign in</h2>
-    <form (ngSubmit)="onLogin()" style="display:flex;flex-direction:column;gap:1em;">
+<div class="login-bg">
+  <div class="login-container">
+    <form (ngSubmit)="onLogin()">
+      <div class="login-logo-row">
+        <img src="assets/logo.png" alt="Open Route" class="login-logo" />
+      </div>
+      <div class="login-header">
+        <h2 class="login-title">Open Route</h2>
+        <div class="login-subheader">Make easy follow routes</div>
+      </div>
       <mat-form-field appearance="outline">
         <mat-label>Username</mat-label>
         <input matInput [(ngModel)]="username" name="username" required />
@@ -11,9 +17,9 @@
         <input matInput [(ngModel)]="password" name="password" type="password" required />
       </mat-form-field>
       <button mat-raised-button color="primary" type="submit">Login</button>
+      <div *ngIf="error" class="login-error">
+        <mat-icon>error</mat-icon> Invalid username or password
+      </div>
     </form>
-    <mat-card *ngIf="error" style="background:#ffcdd2;color:#b71c1c;margin-top:1em;padding:0.5em;">
-      <mat-icon>error</mat-icon> Invalid username or password
-    </mat-card>
-  </mat-card>
+  </div>
 </div>

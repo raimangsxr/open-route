@@ -1,0 +1,18 @@
+
+/* Eliminar cualquier margen/padding entre header y el contenido principal */
+body, html, app-root, .app-root, :host {
+  margin: 0 !important;
+  padding: 0 !important;
+  box-sizing: border-box;
+}
+
+app-header, mat-toolbar {
+  margin-bottom: 0 !important;
+  padding-bottom: 0 !important;
+  display: block;
+}
+
+router-outlet, .main-content {
+  margin-top: 0 !important;
+  padding-top: 0 !important;
+}
