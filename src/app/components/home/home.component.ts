@@ -1,5 +1,6 @@
 // ...existing code...
 import { Component, OnInit, OnDestroy } from '@angular/core';
+import { MatSnackBar } from '@angular/material/snack-bar';
 import { GpxService } from '../../services/gpx.service';
 import { Subscription } from 'rxjs';
 
@@ -12,7 +13,7 @@ export class HomeComponent implements OnInit, OnDestroy {
   gpxData: string | null = null;
   private sub?: Subscription;
 
-  constructor(private gpxService: GpxService) {}
+  constructor(private gpxService: GpxService, private snackBar: MatSnackBar) {}
 
   ngOnInit() {
     this.gpxService.loadFromLocalStorage();
@@ -31,5 +32,11 @@ export class HomeComponent implements OnInit, OnDestroy {
 
   onGpxLoaded(gpx: string) {
     this.gpxService.setGpxData(gpx);
+    this.snackBar.open('¡Ruta GPX subida correctamente!', 'Cerrar', {
+      duration: 3500,
+      verticalPosition: 'bottom',
+      horizontalPosition: 'center',
+      panelClass: ['mat-elevation-z4', 'custom-snackbar']
+    });
   }
 }
