@@ -1,14 +1,33 @@
-<div class="home-container" style="display:flex;flex-direction:column;align-items:center;width:100vw;max-width:100vw;padding:0;margin:0;">
-  <div style="width:100%;max-width:900px;padding:2em 1em 0 1em;">
-    <app-gpx-upload *ngIf="!gpxData" (gpxLoaded)="onGpxLoaded($event)"></app-gpx-upload>
-    <app-map [gpxData]="gpxData"></app-map>
-    <div style="display:flex;gap:1em;justify-content:center;margin-top:2em;">
-      <button *ngIf="gpxData" mat-raised-button color="primary" routerLink="/navigator">
-        <mat-icon>navigation</mat-icon> Iniciar ruta
-      </button>
-      <button *ngIf="gpxData" mat-raised-button color="warn" (click)="clearGpx()">
-        <mat-icon>delete</mat-icon> Limpiar ruta
-      </button>
-    </div>
+
+<div class="home-fullscreen">
+  <div class="home-map-area">
+    <ng-container *ngIf="!gpxData">
+      <div class="home-upload-wrapper-centered">
+        <div class="home-upload-message">Sube un archivo GPX para ver la ruta en el mapa.</div>
+        <app-gpx-upload (gpxLoaded)="onGpxLoaded($event)"></app-gpx-upload>
+      </div>
+    </ng-container>
+    <ng-container *ngIf="gpxData">
+      <app-map [gpxData]="gpxData"></app-map>
+      <div class="home-floating-panel">
+        <div class="home-panel-header">
+          <mat-icon color="primary">info</mat-icon>
+          <h2>Bienvenido a Open Route</h2>
+        </div>
+        <div class="home-panel-content">
+          <div class="home-panel-row"><mat-icon>check_circle</mat-icon> <span>Ruta cargada correctamente</span></div>
+          <div class="home-panel-actions">
+            <button mat-flat-button color="primary" class="action-btn mat-mdc-flat-button" routerLink="/navigator">
+              <mat-icon class="action-icon" aria-hidden="true">navigation</mat-icon>
+              <span class="action-label">Iniciar ruta</span>
+            </button>
+            <button mat-flat-button color="warn" class="action-btn mat-mdc-flat-button" (click)="clearGpx()">
+              <mat-icon class="action-icon" aria-hidden="true">delete</mat-icon>
+              <span class="action-label">Limpiar ruta</span>
+            </button>
+          </div>
+        </div>
+      </div>
+    </ng-container>
   </div>
 </div>
