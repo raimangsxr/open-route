@@ -74,10 +74,15 @@ export class MapComponent implements OnChanges, AfterViewInit {
       const parser = new DOMParser();
       const xml = parser.parseFromString(this.gpxData, 'text/xml');
       const trkpts = Array.from(xml.getElementsByTagName('trkpt'));
-      const path = trkpts.map(pt => ([parseFloat(pt.getAttribute('lat') || '0'), parseFloat(pt.getAttribute('lon') || '0')]));
+      const path: [number, number][] = trkpts.map(pt => [
+        parseFloat(pt.getAttribute('lat') || '0'),
+        parseFloat(pt.getAttribute('lon') || '0')
+      ]);
       if (path.length > 0) {
         this.polyline = L.polyline(path, { color: '#1976d2', weight: 4 }).addTo(this.map);
         this.map.fitBounds(this.polyline.getBounds());
+        // Añadir flechas de dirección sobre la ruta
+        this.addArrowsToPolyline(path, L);
         // Añadir marcador de inicio
         if (this.startMarker) this.startMarker.remove();
         if (this.endMarker) this.endMarker.remove();
@@ -96,6 +101,48 @@ export class MapComponent implements OnChanges, AfterViewInit {
         }).addTo(this.map);
       }
     }
+  }
+
+  /**
+   * Añade flechas de dirección sobre la ruta GPX usando divIcons rotados.
+   */
+  private addArrowsToPolyline(path: [number, number][], L: any) {
+    // Elimina flechas anteriores si existen
+    if ((this as any)._arrowMarkers) {
+      (this as any)._arrowMarkers.forEach((m: any) => m.remove());
+    }
+    (this as any)._arrowMarkers = [];
+    // Coloca una flecha cada N puntos (ajustable)
+    const step = Math.max(1, Math.floor(path.length / 20)); // Máx 20 flechas
+    for (let i = step; i < path.length; i += step) {
+      const p1 = path[i - step];
+      const p2 = path[i];
+      if (!p1 || !p2) continue;
+      const angle = this.getAngle(p1, p2);
+      // Calcular el desplazamiento para centrar la flecha sobre el segmento
+      // Usar interpolación geodésica para mayor precisión
+      const t = 0.5; // punto medio del segmento
+      const midLat = p1[0] + (p2[0] - p1[0]) * t;
+      const midLng = p1[1] + (p2[1] - p1[1]) * t;
+      const marker = L.marker([midLat, midLng], {
+        icon: L.divIcon({
+          className: 'route-arrow',
+          html: `<span style="display:inline-block;transform:rotate(${angle}deg);font-size:2em;color:#1976d2;text-shadow:0 0 4px #fff,0 0 2px #fff;">&#8594;</span>`
+        }),
+        interactive: false
+      }).addTo(this.map);
+      (this as any)._arrowMarkers.push(marker);
+    }
+  }
+
+  /**
+   * Calcula el ángulo en grados entre dos puntos lat/lon para rotar la flecha.
+   */
+  private getAngle(p1: [number, number], p2: [number, number]): number {
+    const dy = p2[0] - p1[0];
+    const dx = (p2[1] - p1[1]) * Math.cos((p1[0] + p2[0]) * Math.PI / 360);
+    const angle = Math.atan2(dy, dx) * 180 / Math.PI;
+    return angle;
   }
 
   private destroyMap() {
