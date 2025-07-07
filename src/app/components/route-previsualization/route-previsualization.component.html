@@ -1,10 +1,8 @@
 
 <div class="route-previsualization-container">
-  <div class="map-wrapper">
+  <div class="map-wrapper" style="position:relative;">
     <app-map [gpxData]="gpxData"></app-map>
-  </div>
-  <div class="bottom-section">
-    <div class="route-info-center">
+    <div class="dialog-over-map">
       <div class="info-header">
         <mat-icon color="primary">info</mat-icon>
         <h2>Route information</h2>
@@ -17,7 +15,7 @@
       <ng-template #noGpx>
         <div class="info-row"><mat-icon>error_outline</mat-icon> <span>No GPX route loaded.</span></div>
       </ng-template>
-      <div class="actions actions-center modern-actions">
+      <div class="actions actions-center modern-actions dialog-actions-vertical">
         <button mat-flat-button color="primary" class="action-btn mat-mdc-flat-button" routerLink="/navigator" [disabled]="!gpxData">
           <mat-icon class="action-icon" aria-hidden="true">navigation</mat-icon>
           <span class="action-label">Start navigation</span>
@@ -29,4 +27,5 @@
       </div>
     </div>
   </div>
+
 </div>

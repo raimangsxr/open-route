@@ -1,3 +1,43 @@
+.dialog-over-map .info-row mat-icon {
+  vertical-align: middle;
+  margin-right: 0.3em;
+  font-size: 1.2em;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+}
+.dialog-over-map .info-row span {
+  display: inline-flex;
+  align-items: center;
+}
+.dialog-actions-vertical {
+  display: flex !important;
+  flex-direction: column !important;
+  gap: 1em !important;
+  width: 100%;
+  align-items: stretch;
+  margin-top: 1.2em;
+}
+
+.dialog-over-map {
+  position: absolute;
+  top: 50%;
+  right: 0;
+  transform: translateY(-50%);
+  background: rgba(255,255,255,0.85);
+  color: #222;
+  border-radius: 12px 0 0 12px;
+  box-shadow: 0 2px 12px #1976d233;
+  padding: 1.1em 2em;
+  font-size: 1.2em;
+  font-family: 'Roboto', 'Helvetica Neue', Arial, sans-serif;
+  z-index: 1002;
+  text-align: center;
+  pointer-events: auto;
+  min-width: 120px;
+  max-width: 60vw;
+  border-right: none;
+}
 
 p { text-align: center; margin: 2em; color: #1976d2; font-size: 1.2em; }
 
@@ -17,102 +57,52 @@ p { text-align: center; margin: 2em; color: #1976d2; font-size: 1.2em; }
 
 .map-wrapper {
   width: 100%;
+  height: 100%;
   max-width: 100vw;
-  min-height: 60vh;
+  max-height: 100vh;
+  min-height: 0;
+  min-width: 0;
   display: flex;
   align-items: stretch;
   justify-content: stretch;
   padding: 0;
   margin: 0;
   box-sizing: border-box;
-  overflow-x: hidden;
+  overflow: hidden;
 }
 
 app-map {
   flex: 1 1 0%;
   width: 100%;
+  height: 100%;
   min-width: 0;
-  min-height: 60vh;
+  min-height: 0;
+  max-width: 100%;
+  max-height: 100%;
   display: block;
   box-sizing: border-box;
-  overflow-x: auto;
+  overflow: hidden;
+  position: relative;
+  z-index: 1;
 }
 
-
-.bottom-section {
-  width: 100vw;
+.map-wrapper {
+  position: relative;
+  width: 100%;
+  height: 100%;
   max-width: 100vw;
+  max-height: 100vh;
+  min-height: 0;
+  min-width: 0;
   display: flex;
-  flex-direction: column;
-  align-items: center;
-  gap: 1.5em;
-  margin-top: 2em;
-  margin-bottom: 2em;
-}
-
-.route-info-center {
-  width: 100%;
-  max-width: 600px;
-  background: #fff;
-  border-radius: 16px;
-  box-shadow: 0 2px 12px #1976d211;
-  padding: 2em 1.5em 1.5em 1.5em;
-  margin-bottom: 0.5em;
-  display: flex;
-  flex-direction: column;
-  align-items: center;
-}
-.info-header {
-  display: flex;
-  align-items: center;
-  gap: 0.5em;
-  margin-bottom: 1em;
-  justify-content: center;
-}
-.info-header mat-icon {
-  font-size: 2.1rem;
-  line-height: 1;
-  vertical-align: middle;
-  display: inline-flex;
-  align-items: center;
-  justify-content: center;
-  min-width: 2.1rem;
-  min-height: 2.1rem;
-  border-radius: 50%;
-  box-sizing: content-box;
-  padding: 0;
-  margin-bottom: 0;
-}
-.info-header h2 {
-  margin: 0;
-  font-size: 1.45rem;
-  font-weight: 500;
-  line-height: 1.1;
-  display: flex;
-  align-items: flex-end;
-}
-.info-content {
-  display: flex;
-  flex-direction: column;
-  gap: 0.7em;
-  align-items: center;
-}
-.info-row {
-  display: flex;
-  align-items: center;
-  gap: 0.5em;
-  font-size: 1.08em;
-}
-
-.modern-actions {
-  display: flex;
-  flex-direction: row;
-  justify-content: center;
   align-items: stretch;
-  gap: 2rem;
-  margin-top: 2.5rem;
-  width: 100%;
+  justify-content: stretch;
+  padding: 0;
+  margin: 0;
+  box-sizing: border-box;
+  overflow: hidden;
 }
+
 
 /* Material Design: Remove custom border-radius and box-shadow for buttons, use default Material styles */
 .action-btn {
