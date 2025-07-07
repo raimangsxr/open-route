@@ -158,7 +158,7 @@ export class RouteNavigatorComponent implements OnInit, OnDestroy {
         this.map.setView([lat, lon]);
       },
       err => {
-        this.error = 'No se pudo obtener la posición: ' + err.message;
+        this.error = 'Could not get position: ' + err.message;
       },
       { enableHighAccuracy: true, maximumAge: 1000, timeout: 10000 }
     );
@@ -173,7 +173,7 @@ export class RouteNavigatorComponent implements OnInit, OnDestroy {
       w.removeEventListener('deviceorientation', this.orientationListener, true);
     }
     this.removeExitFullscreenBtn();
-    this.error = 'Navegación detenida.';
+    this.error = 'Navigation stopped.';
     setTimeout(() => this.router.navigate(['/']), 300);
   }
 

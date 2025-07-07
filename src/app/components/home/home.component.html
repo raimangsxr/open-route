@@ -3,7 +3,7 @@
   <div class="home-map-area">
     <ng-container *ngIf="!gpxData">
       <div class="home-upload-wrapper-centered">
-        <div class="home-upload-message">Sube un archivo GPX para ver la ruta en el mapa.</div>
+        <div class="home-upload-message">Upload a GPX file to view the route on the map.</div>
         <app-gpx-upload (gpxLoaded)="onGpxLoaded($event)"></app-gpx-upload>
       </div>
     </ng-container>
@@ -11,19 +11,18 @@
       <app-map [gpxData]="gpxData"></app-map>
       <div class="home-floating-panel">
         <div class="home-panel-header">
-          <mat-icon color="primary">info</mat-icon>
-          <h2>Bienvenido a Open Route</h2>
+          <h2>Welcome to Open Route</h2>
         </div>
         <div class="home-panel-content">
-          <div class="home-panel-row"><mat-icon>check_circle</mat-icon> <span>Ruta cargada correctamente</span></div>
+          <div class="home-panel-row"><mat-icon>check_circle</mat-icon> <span>Route loaded successfully</span></div>
           <div class="home-panel-actions">
             <button mat-flat-button color="primary" class="action-btn mat-mdc-flat-button" routerLink="/navigator">
               <mat-icon class="action-icon" aria-hidden="true">navigation</mat-icon>
-              <span class="action-label">Iniciar ruta</span>
+              <span class="action-label">Start navigation</span>
             </button>
             <button mat-flat-button color="warn" class="action-btn mat-mdc-flat-button" (click)="clearGpx()">
               <mat-icon class="action-icon" aria-hidden="true">delete</mat-icon>
-              <span class="action-label">Limpiar ruta</span>
+              <span class="action-label">Clear route</span>
             </button>
           </div>
         </div>

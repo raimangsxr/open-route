@@ -3,9 +3,9 @@
   <div class="map-wrapper" style="position:relative;">
     <app-map [gpxData]="gpxData"></app-map>
     <div class="dialog-over-map">
-      <div class="info-header">
+      <div class="info-header" style="display: flex; align-items: center; gap: 8px;">
         <mat-icon color="primary">info</mat-icon>
-        <h2>Route information</h2>
+        <h2 style="margin: 0; font-size: 1.4em; font-weight: 500; display: inline-block;">Route information</h2>
       </div>
       <div *ngIf="gpxInfo; else noGpx" class="info-content">
         <div class="info-row"><mat-icon>label</mat-icon> <span><strong>Name:</strong> {{gpxInfo.name || 'Unknown'}}</span></div>

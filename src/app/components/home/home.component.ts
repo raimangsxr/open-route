@@ -32,7 +32,7 @@ export class HomeComponent implements OnInit, OnDestroy {
 
   onGpxLoaded(gpx: string) {
     this.gpxService.setGpxData(gpx);
-    this.snackBar.open('¡Ruta GPX subida correctamente!', 'Cerrar', {
+    this.snackBar.open('GPX route uploaded successfully!', 'Close', {
       duration: 3500,
       verticalPosition: 'bottom',
       horizontalPosition: 'center',
