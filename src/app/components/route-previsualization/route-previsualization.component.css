@@ -1,5 +1,6 @@
 .dialog-over-map .info-row {
   display: flex;
+  align-items: baseline;
   gap: 0.5em;
 }
 
@@ -11,11 +12,10 @@
   justify-content: center;
   height: 1.4em;
   line-height: 1.4em;
-  position: static;
 }
 .dialog-over-map .info-row span {
   display: inline-flex;
-  align-items: center;
+  align-items: baseline;
 }
 .dialog-actions-vertical {
   display: flex !important;
@@ -62,21 +62,7 @@ p { text-align: center; margin: 2em; color: #1976d2; font-size: 1.2em; }
 }
 
 
-.map-wrapper {
-  width: 100%;
-  height: 100%;
-  max-width: 100vw;
-  max-height: 100vh;
-  min-height: 0;
-  min-width: 0;
-  display: flex;
-  align-items: stretch;
-  justify-content: stretch;
-  padding: 0;
-  margin: 0;
-  box-sizing: border-box;
-  overflow: hidden;
-}
+
 
 app-map {
   flex: 1 1 0%;
