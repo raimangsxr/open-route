@@ -1,10 +1,17 @@
+.dialog-over-map .info-row {
+  display: flex;
+  gap: 0.5em;
+}
+
 .dialog-over-map .info-row mat-icon {
-  vertical-align: middle;
-  margin-right: 0.3em;
-  font-size: 1.2em;
+  margin-right: 0.35em;
+  font-size: 1.25em;
   display: inline-flex;
-  align-items: center;
+  align-items: baseline;
   justify-content: center;
+  height: 1.4em;
+  line-height: 1.4em;
+  position: static;
 }
 .dialog-over-map .info-row span {
   display: inline-flex;
