@@ -1,0 +1,40 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: open-route
+  namespace: open-route
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: open-route
+  template:
+    metadata:
+      labels:
+        app: open-route
+    spec:
+      containers:
+      - name: open-route
+        image: rromani/open-route:latest
+        ports:
+        - containerPort: 80
+        securityContext:
+          allowPrivilegeEscalation: false
+          capabilities:
+            drop: ["ALL"]
+          runAsNonRoot: true
+          seccompProfile:
+            type: RuntimeDefault
+---
+apiVersion: v1
+kind: Service
+metadata:
+  name: open-route-service
+spec:
+  type: ClusterIP
+  selector:
+    app: open-route
+  ports:
+    - protocol: TCP
+      port: 80
+      targetPort: 80
