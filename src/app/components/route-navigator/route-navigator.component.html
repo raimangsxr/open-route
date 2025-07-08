@@ -1,16 +1,18 @@
-<div class="route-navigator-container" style="display:flex;flex-direction:column;align-items:center;width:100vw;max-width:100vw;padding:0;margin:0;">
-  <div class="map" #mapContainer style="flex:1;width:100vw;max-width:100vw;min-height:60vh;margin-bottom:2em;"></div>
-  <div style="display:flex;gap:1em;justify-content:center;">
-    <button mat-raised-button color="primary" (click)="goFullscreen()">
-      <mat-icon>fullscreen</mat-icon> Fullscreen
-    </button>
-    <button mat-raised-button color="warn" (click)="stopNavigation()">
-      <mat-icon>close</mat-icon> Stop navigation
-    </button>
-  </div>
-  <div *ngIf="error" class="error" style="margin-top:1em;">
-    <span style="background:#ffcdd2;color:#b71c1c;padding:1em;border-radius:8px;display:inline-block;">
-      <mat-icon>error</mat-icon> {{error}}
-    </span>
+<div class="route-navigator-container">
+  <div class="map-wrapper">
+    <div class="map" #mapContainer></div>
+    <div class="map-fab-group">
+      <button mat-fab color="primary" class="map-fab" (click)="goFullscreen()" aria-label="Fullscreen">
+        <mat-icon>fullscreen</mat-icon>
+      </button>
+      <button mat-fab color="warn" class="map-fab" (click)="stopNavigation()" aria-label="Stop navigation">
+        <mat-icon>close</mat-icon>
+      </button>
+    </div>
+    <div *ngIf="error" class="map-error-fab">
+      <span class="map-error-msg">
+        <mat-icon>error</mat-icon> {{error}}
+      </span>
+    </div>
   </div>
 </div>

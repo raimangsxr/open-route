@@ -11,32 +11,57 @@ import { Subscription } from 'rxjs';
 })
 export class HomeComponent implements OnInit, OnDestroy {
   gpxData: string | null = null;
-  private sub?: Subscription;
 
   constructor(private gpxService: GpxService, private snackBar: MatSnackBar) {}
 
-  ngOnInit() {
-    this.gpxService.loadFromLocalStorage();
-    this.sub = this.gpxService.gpxData$.subscribe(data => {
-      this.gpxData = data;
-    });
+  async ngOnInit() {
+    try {
+      this.gpxData = await this.gpxService.loadFromLocalStorage();
+    } catch (error) {
+      this.gpxData = null;
+      console.error('Error loading GPX data:', error);
+    }
   }
 
-  ngOnDestroy() {
-    this.sub?.unsubscribe();
+  ngOnDestroy() {}
+
+  async clearGpx() {
+    try {
+      await this.gpxService.clear();
+      this.gpxData = null;
+      this.snackBar.open('GPX route cleared.', 'Close', {
+        duration: 3500,
+        verticalPosition: 'bottom',
+        horizontalPosition: 'center',
+        panelClass: ['mat-elevation-z4', 'custom-snackbar']
+      });
+    } catch (e) {
+      this.snackBar.open('Error clearing GPX route.', 'Close', {
+        duration: 3500,
+        verticalPosition: 'bottom',
+        horizontalPosition: 'center',
+        panelClass: ['mat-elevation-z4', 'custom-snackbar']
+      });
+    }
   }
 
-  clearGpx() {
-    this.gpxService.clear();
-  }
-
-  onGpxLoaded(gpx: string) {
-    this.gpxService.setGpxData(gpx);
-    this.snackBar.open('GPX route uploaded successfully!', 'Close', {
-      duration: 3500,
-      verticalPosition: 'bottom',
-      horizontalPosition: 'center',
-      panelClass: ['mat-elevation-z4', 'custom-snackbar']
-    });
+  async onGpxLoaded(gpx: string) {
+    try {
+      await this.gpxService.setGpxData(gpx);
+      this.gpxData = gpx;
+      this.snackBar.open('GPX route uploaded successfully!', 'Close', {
+        duration: 3500,
+        verticalPosition: 'bottom',
+        horizontalPosition: 'center',
+        panelClass: ['mat-elevation-z4', 'custom-snackbar']
+      });
+    } catch (e) {
+      this.snackBar.open('Error saving GPX route.', 'Close', {
+        duration: 3500,
+        verticalPosition: 'bottom',
+        horizontalPosition: 'center',
+        panelClass: ['mat-elevation-z4', 'custom-snackbar']
+      });
+    }
   }
 }

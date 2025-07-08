@@ -1,4 +1,5 @@
 import { Component, OnDestroy, OnInit } from '@angular/core';
+import { MatSnackBar } from '@angular/material/snack-bar';
 import { Router } from '@angular/router';
 import { GpxService } from '../../services/gpx.service';
 
@@ -8,104 +9,98 @@ import { GpxService } from '../../services/gpx.service';
   styleUrls: ['./route-navigator.component.css']
 })
 export class RouteNavigatorComponent implements OnInit, OnDestroy {
-  private heading: number = 0;
+  private heading = 0;
   private orientationListener: any;
   private map: any;
   private marker: any;
   private polyline: any;
+  private startMarker: any;
+  private endMarker: any;
   private watchId: number | null = null;
   error: string | null = null;
   private gpxData: string | null = null;
-  isFullscreen = false;
-  private exitBtnEl: HTMLElement | null = null;
-  private fullscreenHandler: (() => void) | null = null;
 
-  constructor(private gpxService: GpxService, private router: Router) {
-    if (typeof window !== 'undefined') {
-      this.fullscreenHandler = () => {
-        this.isFullscreen = !!(document.fullscreenElement || (document as any).webkitFullscreenElement || (document as any).msFullscreenElement);
-        // Log visual para depuración
-        console.log('[NAV] fullscreen event. isFullscreen:', this.isFullscreen);
-        if (this.isFullscreen) {
-          this.showExitFullscreenBtn();
-        } else {
-          this.removeExitFullscreenBtn();
-        }
-      };
-      document.addEventListener('fullscreenchange', this.fullscreenHandler);
-      document.addEventListener('webkitfullscreenchange', this.fullscreenHandler);
-      document.addEventListener('msfullscreenchange', this.fullscreenHandler);
-    }
-  }
-  private showExitFullscreenBtn() {
-    if (this.exitBtnEl) return;
-    const btn = document.createElement('button');
-    btn.innerHTML = `<span style="display:inline-flex;align-items:center;gap:0.5em;">
-      <svg width="20" height="20" viewBox="0 0 20 20" style="vertical-align:middle"><path d="M2 7V2h5M18 7V2h-5M2 13v5h5M18 13v5h-5" stroke="#fff" stroke-width="2" fill="none" stroke-linecap="round"/></svg>
-      Salir de pantalla completa
-    </span>`;
-    btn.className = 'exit-fullscreen-btn-global';
-    // Todos los estilos ahora están en navigator.component.css
-    btn.onclick = () => this.exitFullscreen();
-    document.body.appendChild(btn);
-    this.exitBtnEl = btn;
-  }
+  constructor(
+    private gpxService: GpxService,
+    private router: Router,
+    private snackBar: MatSnackBar
+  ) {}
 
-  private removeExitFullscreenBtn() {
-    if (this.exitBtnEl) {
-      this.exitBtnEl.remove();
-      this.exitBtnEl = null;
-    }
-  }
   ngOnInit() {
-    this.gpxService.gpxData$.subscribe(data => {
-      this.gpxData = data;
-    });
-  }
-
-  ngAfterViewInit() {
-    this.ensureLeaflet(() => this.initMap());
-  }
-
-  ngOnDestroy() {
-    if (this.watchId !== null) navigator.geolocation.clearWatch(this.watchId);
-    if (this.map) {
-      this.map.off();
-      this.map.remove();
-    }
-    // Limpieza de listeners de pantalla completa
-    if (typeof window !== 'undefined' && this.fullscreenHandler) {
-      document.removeEventListener('fullscreenchange', this.fullscreenHandler);
-      document.removeEventListener('webkitfullscreenchange', this.fullscreenHandler);
-      document.removeEventListener('msfullscreenchange', this.fullscreenHandler);
-    }
+    this.gpxService.loadFromLocalStorage()
+      .then(data => {
+        console.debug('[NAV] GPX loaded:', data);
+        this.gpxData = data;
+        this.ensureLeaflet(() => {
+          console.debug('[NAV] Leaflet ready, calling initMap');
+          this.initMap();
+        });
+      })
+      .catch(errorMsg => {
+        console.error('[NAV] Error loading GPX data:', errorMsg);
+        this.error = errorMsg;
+        this.snackBar.open('Error loading GPX data: ' + errorMsg, 'Close', {
+          duration: 5000,
+          verticalPosition: 'bottom',
+          horizontalPosition: 'center',
+          panelClass: ['mat-elevation-z4', 'custom-snackbar']
+        });
+      });
   }
 
   private ensureLeaflet(cb: () => void) {
     if ((window as any).L) {
+      console.debug('[NAV] Leaflet already loaded');
       cb();
       return;
     }
+    console.debug('[NAV] Loading Leaflet assets');
     const link = document.createElement('link');
     link.rel = 'stylesheet';
     link.href = 'https://unpkg.com/leaflet@1.9.4/dist/leaflet.css';
     document.head.appendChild(link);
     const script = document.createElement('script');
     script.src = 'https://unpkg.com/leaflet@1.9.4/dist/leaflet.js';
-    script.onload = () => cb();
+    script.onload = () => {
+      console.debug('[NAV] Leaflet script loaded');
+      cb();
+    };
     document.body.appendChild(script);
   }
 
+  ngOnDestroy() {
+    if (this.watchId !== null) navigator.geolocation.clearWatch(this.watchId);
+    this.gpxData = null;
+    if (this.map) {
+      this.map.off();
+      this.map.remove();
+      this.map = null;
+    }
+    this.startMarker = null;
+    this.endMarker = null;
+  }
+
   private initMap() {
+    console.debug('[NAV] initMap called');
     const L = (window as any).L;
     const mapEl = document.querySelector('.map');
-    if (!mapEl) return;
+    if (!mapEl) {
+      console.warn('[NAV] No map element found');
+      return;
+    }
+    // Limpia el contenedor del mapa (por si quedó un canvas anterior)
+    mapEl.innerHTML = '';
+    // Si ya existe un mapa, elimínalo
+    if (this.map) {
+      console.debug('[NAV] Removing previous map instance');
+      this.map.off();
+      this.map.remove();
+      this.map = null;
+    }
     this.map = L.map(mapEl).setView([42.8782, -8.5448], 15);
     L.tileLayer('https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png', {
-      maxZoom: 19,
-      attribution: '© OpenStreetMap contributors'
+      maxZoom: 19
     }).addTo(this.map);
-    // GPX parsing y dibujar ruta
     if (this.gpxData) {
       const parser = new DOMParser();
       const xml = parser.parseFromString(this.gpxData, 'text/xml');
@@ -114,30 +109,76 @@ export class RouteNavigatorComponent implements OnInit, OnDestroy {
       if (path.length > 0) {
         this.polyline = L.polyline(path, { color: '#1976d2', weight: 4 }).addTo(this.map);
         this.map.fitBounds(this.polyline.getBounds());
+        // Add start and end markers
+        const start = path[0];
+        const end = path[path.length - 1];
+        this.startMarker = L.marker(start, {
+          icon: L.divIcon({
+            className: 'start-marker',
+            html: `<svg width="70" height="32" viewBox="0 0 70 32"><rect x="2" y="2" rx="12" ry="12" width="66" height="28" fill="#43a047" stroke="#fff" stroke-width="2"/><text x="35" y="22" text-anchor="middle" font-size="16" fill="#fff" font-family="Arial" font-weight="bold">Start</text></svg>`
+          })
+        }).addTo(this.map);
+        this.endMarker = L.marker(end, {
+          icon: L.divIcon({
+            className: 'end-marker',
+            html: `<svg width="70" height="32" viewBox="0 0 70 32"><rect x="2" y="2" rx="12" ry="12" width="66" height="28" fill="#d32f2f" stroke="#fff" stroke-width="2"/><text x="35" y="22" text-anchor="middle" font-size="16" fill="#fff" font-family="Arial" font-weight="bold">End</text></svg>`
+          })
+        }).addTo(this.map);
       }
     }
+    console.debug('[NAV] Map initialized, starting navigation');
     this.startNavigation();
   }
 
   private startNavigation() {
-    // Escuchar orientación del dispositivo
+    console.debug('[NAV] startNavigation called');
     this.orientationListener = (event: DeviceOrientationEvent) => {
       if (typeof event.alpha === 'number') {
-        // En móviles, alpha es la dirección respecto al norte
-        this.heading = 360 - event.alpha; // Corregir para que 0 sea norte
+        let heading = 360 - event.alpha;
+        // Detect if on mobile and in landscape mode
+        const isMobile = /Mobi|Android/i.test(navigator.userAgent);
+        if (isMobile && window.screen && window.screen.orientation && window.screen.orientation.type) {
+          const orientationType = window.screen.orientation.type;
+          const angle = window.screen.orientation.angle;
+          let orientationAdjusted = 0;
+          switch (orientationType) {
+            case 'portrait-primary':
+              // Portrait mode, no adjustment needed
+              break;
+            case 'portrait-secondary':
+              orientationAdjusted = 180;
+              break;
+            case 'landscape-primary':
+              orientationAdjusted = 90;
+              break;
+            case 'landscape-secondary':
+              orientationAdjusted = 270;
+              break;
+            default:
+              console.warn('[NAV] Unknown orientation type:', orientationType);
+              return;
+          } 
+          // Normalize heading to [0, 360)
+          heading = (heading + orientationAdjusted) % 360;
+        }
+        this.heading = heading;
         this.updateMarkerRotation();
       }
     };
     const w: any = window;
     if ('ondeviceorientationabsolute' in w) {
       w.addEventListener('deviceorientationabsolute', this.orientationListener, true);
+      console.debug('[NAV] deviceorientationabsolute listener added');
     } else if ('ondeviceorientation' in w) {
       w.addEventListener('deviceorientation', this.orientationListener, true);
+      console.debug('[NAV] deviceorientation listener added');
     }
     if (!navigator.geolocation) {
-      this.error = 'Geolocalización no soportada.';
+      this.error = 'Geolocation is not supported.';
+      console.warn('[NAV] Geolocation is not supported');
       return;
     }
+    let firstPosition = true;
     this.watchId = navigator.geolocation.watchPosition(
       pos => {
         this.error = null;
@@ -151,40 +192,78 @@ export class RouteNavigatorComponent implements OnInit, OnDestroy {
               html: `<svg id="arrow-svg" width="32" height="32" viewBox="0 0 32 32"><polygon points="16,2 30,30 16,24 2,30" fill="#1976d2" stroke="#fff" stroke-width="2"/></svg>`
             })
           }).addTo(this.map);
+          console.debug('[NAV] Marker created at', lat, lon);
         } else {
           this.marker.setLatLng([lat, lon]);
         }
         this.updateMarkerRotation();
-        this.map.setView([lat, lon]);
+        if (firstPosition) {
+          this.map.setView([lat, lon], 17);
+          console.debug('[NAV] First position, centering and zooming map');
+          firstPosition = false;
+        } else {
+          this.map.panTo([lat, lon]);
+        }
       },
       err => {
-        this.error = 'Could not get position: ' + err.message;
+        let userMsg = 'Could not get position.';
+        if (err.code === 1) {
+          userMsg = 'Location permission denied. Please enable geolocation permissions in your browser.';
+        } else if (err.code === 2) {
+          userMsg = 'Location unavailable. Make sure GPS is enabled or try another device.';
+        } else if (err.code === 3) {
+          userMsg = 'Location request timed out. Please try again.';
+        }
+        this.error = userMsg;
+        console.error('[NAV] Geolocation error:', err);
       },
       { enableHighAccuracy: true, maximumAge: 1000, timeout: 10000 }
     );
   }
 
   stopNavigation() {
-    if (this.watchId !== null) navigator.geolocation.clearWatch(this.watchId);
+    console.debug('[NAV] stopNavigation called');
+    if (this.watchId !== null) {
+      navigator.geolocation.clearWatch(this.watchId);
+      this.watchId = null;
+      console.debug('[NAV] Cleared geolocation watch');
+    }
     const w: any = window;
     if ('ondeviceorientationabsolute' in w) {
       w.removeEventListener('deviceorientationabsolute', this.orientationListener, true);
+      console.debug('[NAV] Removed deviceorientationabsolute listener');
     } else if ('ondeviceorientation' in w) {
       w.removeEventListener('deviceorientation', this.orientationListener, true);
+      console.debug('[NAV] Removed deviceorientation listener');
     }
-    this.removeExitFullscreenBtn();
-    this.error = 'Navigation stopped.';
-    setTimeout(() => this.router.navigate(['/']), 300);
+    // Limpia el mapa y el marker para evitar residuos al volver
+    if (this.map) {
+      this.map.off();
+      this.map.remove();
+      this.map = null;
+      console.debug('[NAV] Map instance destroyed');
+    }
+    this.marker = null;
+    this.polyline = null;
+    this.startMarker = null;
+    this.endMarker = null;
+    this.snackBar.open('Navigation stopped.', 'Close', {
+      duration: 3500,
+      verticalPosition: 'bottom',
+      horizontalPosition: 'center',
+      panelClass: ['mat-elevation-z4', 'custom-snackbar']
+    });
+    this.router.navigate(['/']);
   }
 
   private updateMarkerRotation() {
-    // Rota el SVG de la flecha según el heading
     const markerEl = this.marker && this.marker._icon;
     if (markerEl) {
       const svg = markerEl.querySelector('#arrow-svg');
       if (svg) {
         svg.style.transform = `rotate(${this.heading}deg)`;
         svg.style.transformOrigin = '50% 50%';
+        console.debug('[NAV] Marker rotation updated:', this.heading);
       }
     }
   }
@@ -193,10 +272,6 @@ export class RouteNavigatorComponent implements OnInit, OnDestroy {
     const mapEl = document.querySelector('.map') as HTMLElement;
     if (mapEl && mapEl.requestFullscreen) {
       mapEl.requestFullscreen();
-    } else if (mapEl && (mapEl as any).webkitRequestFullscreen) {
-      (mapEl as any).webkitRequestFullscreen();
-    } else if (mapEl && (mapEl as any).msRequestFullscreen) {
-      (mapEl as any).msRequestFullscreen();
     }
   }
 
@@ -204,11 +279,6 @@ export class RouteNavigatorComponent implements OnInit, OnDestroy {
     const d: any = document;
     if (d.exitFullscreen) {
       d.exitFullscreen();
-    } else if (d.webkitExitFullscreen) {
-      d.webkitExitFullscreen();
-    } else if (d.msExitFullscreen) {
-      d.msExitFullscreen();
     }
-    this.removeExitFullscreenBtn();
   }
 }

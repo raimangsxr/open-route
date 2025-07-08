@@ -65,6 +65,7 @@ export class MapComponent implements OnChanges, AfterViewInit {
       this.map.off();
       this.map.remove();
     }
+    mapEl.innerHTML = '';
     this.map = L.map(mapEl).setView([42.8782, -8.5448], 15);
     L.tileLayer('https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png', {
       maxZoom: 19,
