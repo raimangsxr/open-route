@@ -160,9 +160,21 @@ export class RouteNavigatorComponent implements OnInit, OnDestroy {
     await this.requestWakeLock();
     console.debug('[NAV] startNavigation called');
     this.orientationListener = (event: DeviceOrientationEvent) => {
-      if (typeof event.alpha === 'number') {
-        let heading = 360 - event.alpha;
-        // Detect if on mobile and in landscape mode
+      let heading: number | null = null;
+      // iOS: webkitCompassHeading (0=norte, 90=este, 180=sur, 270=oeste)
+      if ((event as any).webkitCompassHeading !== undefined) {
+        heading = (event as any).webkitCompassHeading;
+      }
+      // Android: absolute + alpha (0=norte, 90=este, 180=sur, 270=oeste)
+      else if (event.absolute === true && typeof event.alpha === 'number') {
+        heading = 360 - event.alpha;
+      }
+      // Fallback: just alpha (menos preciso)
+      else if (typeof event.alpha === 'number') {
+        heading = 360 - event.alpha;
+      }
+      if (heading !== null) {
+        // Ajuste landscape/portrait igual que antes...
         const isMobile = /Mobi|Android/i.test(navigator.userAgent);
         if (isMobile && window.screen && window.screen.orientation && window.screen.orientation.type) {
           const orientationType = window.screen.orientation.type;
@@ -170,7 +182,6 @@ export class RouteNavigatorComponent implements OnInit, OnDestroy {
           let orientationAdjusted = 0;
           switch (orientationType) {
             case 'portrait-primary':
-              // Portrait mode, no adjustment needed
               break;
             case 'portrait-secondary':
               orientationAdjusted = 180;
@@ -184,8 +195,7 @@ export class RouteNavigatorComponent implements OnInit, OnDestroy {
             default:
               console.warn('[NAV] Unknown orientation type:', orientationType);
               return;
-          } 
-          // Normalize heading to [0, 360)
+          }
           heading = (heading + orientationAdjusted) % 360;
         }
         this.heading = heading;
