@@ -19,6 +19,7 @@ export class RouteNavigatorComponent implements OnInit, OnDestroy {
   private watchId: number | null = null;
   error: string | null = null;
   private gpxData: string | null = null;
+  private wakeLock: any = null;
 
   constructor(
     private gpxService: GpxService,
@@ -69,6 +70,7 @@ export class RouteNavigatorComponent implements OnInit, OnDestroy {
   }
 
   ngOnDestroy() {
+    this.releaseWakeLock();
     if (this.watchId !== null) navigator.geolocation.clearWatch(this.watchId);
     this.gpxData = null;
     if (this.map) {
@@ -130,7 +132,32 @@ export class RouteNavigatorComponent implements OnInit, OnDestroy {
     this.startNavigation();
   }
 
-  private startNavigation() {
+  private async requestWakeLock() {
+    try {
+      if ('wakeLock' in navigator) {
+        this.wakeLock = await (navigator as any).wakeLock.request('screen');
+        console.debug('[NAV] Wake Lock acquired');
+        this.wakeLock.addEventListener('release', () => {
+          console.debug('[NAV] Wake Lock was released');
+        });
+      } else {
+        console.warn('[NAV] Wake Lock API not supported in this browser');
+      }
+    } catch (err) {
+      console.error('[NAV] Could not acquire Wake Lock:', err);
+    }
+  }
+
+  private async releaseWakeLock() {
+    if (this.wakeLock) {
+      await this.wakeLock.release();
+      this.wakeLock = null;
+      console.debug('[NAV] Wake Lock released manually');
+    }
+  }
+
+  async startNavigation() {
+    await this.requestWakeLock();
     console.debug('[NAV] startNavigation called');
     this.orientationListener = (event: DeviceOrientationEvent) => {
       if (typeof event.alpha === 'number') {
@@ -221,7 +248,8 @@ export class RouteNavigatorComponent implements OnInit, OnDestroy {
     );
   }
 
-  stopNavigation() {
+  async stopNavigation() {
+    await this.releaseWakeLock();
     console.debug('[NAV] stopNavigation called');
     if (this.watchId !== null) {
       navigator.geolocation.clearWatch(this.watchId);
