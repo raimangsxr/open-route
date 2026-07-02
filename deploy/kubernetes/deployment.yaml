@@ -1,0 +1,65 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: open-route
+  namespace: open-route
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: open-route
+  template:
+    metadata:
+      labels:
+        app: open-route
+    spec:
+      securityContext:
+        fsGroup: 101
+      containers:
+      - name: open-route
+        image: rromani/open-route:latest
+        ports:
+        - containerPort: 80
+        securityContext:
+          allowPrivilegeEscalation: false
+          capabilities:
+            drop: ["ALL"]
+          runAsNonRoot: true
+          runAsUser: 101
+          runAsGroup: 101
+          seccompProfile:
+            type: RuntimeDefault
+---
+apiVersion: v1
+kind: Service
+metadata:
+  name: open-route-service
+spec:
+  type: ClusterIP
+  selector:
+    app: open-route
+  ports:
+    - protocol: TCP
+      port: 80
+      targetPort: 80
+---
+apiVersion: networking.k8s.io/v1
+kind: Ingress
+metadata:
+  annotations:
+    traefik.ingress.kubernetes.io/router.entrypoints: web
+  name: my-open-route
+  namespace: open-route
+spec:
+  ingressClassName: my-traefik
+  rules:
+  - host: route.rromani.eu
+    http:
+      paths:
+      - backend:
+          service:
+            name: open-route-service
+            port:
+              number: 80
+        path: /
+        pathType: Prefix

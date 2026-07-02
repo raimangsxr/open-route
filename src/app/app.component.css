@@ -1,18 +1,44 @@
 
-/* Eliminar cualquier margen/padding entre header y el contenido principal */
-body, html, app-root, .app-root, :host {
-  margin: 0 !important;
-  padding: 0 !important;
+
+html, body, app-root, .app-root, :host {
+  height: 100vh;
+  width: 100vw;
+  margin: 0;
+  padding: 0;
   box-sizing: border-box;
+  overflow: hidden;
 }
 
-app-header, mat-toolbar {
-  margin-bottom: 0 !important;
-  padding-bottom: 0 !important;
-  display: block;
+.app-layout {
+  display: flex;
+  flex-direction: column;
+  height: 100vh;
+  width: 100vw;
+  min-height: 100vh;
+  min-width: 100vw;
+  margin: 0;
+  padding: 0;
+  box-sizing: border-box;
+  overflow: hidden;
 }
 
-router-outlet, .main-content {
-  margin-top: 0 !important;
-  padding-top: 0 !important;
+.app-header-block {
+  flex: 0 0 auto;
+  width: 100vw;
+  z-index: 10;
+}
+
+.app-main-block {
+  flex: 1 1 0;
+  width: 100vw;
+  overflow: hidden;
+  display: flex;
+  flex-direction: column;
+  min-height: 0;
+}
+
+.app-footer-block {
+  flex: 0 0 auto;
+  width: 100vw;
+  z-index: 10;
 }

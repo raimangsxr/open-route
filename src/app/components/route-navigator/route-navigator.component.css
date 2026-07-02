@@ -1,57 +1,88 @@
-.map {
+/* FAB for exiting fullscreen, bottom right, above other FABs */
+/* Ensure the host fills the main area for perfect map stretching */
+:host {
+  display: flex;
+  flex-direction: column;
+  flex: 1 1 0;
+  min-height: 0;
+  height: 100%;
   width: 100%;
-  height: 70vh;
-  border-radius: 12px;
-  box-shadow: 0 4px 16px #0002;
-  margin: 2em auto;
-  border: 2px solid #1976d2;
+  box-sizing: border-box;
 }
-.fullscreen-btn {
-  margin: 1em auto 0 auto;
-  display: block;
-  background: #222;
-  color: #fff;
-  border: none;
-  border-radius: 6px;
-  padding: 0.7em 2em;
-  font-size: 1.1em;
-  cursor: pointer;
+.route-navigator-container, .map-wrapper, .map {
+  min-height: 0 !important;
+  height: 100% !important;
+  width: 100% !important;
+  box-sizing: border-box;
 }
-.stop-btn {
-  margin: 1em auto;
-  display: block;
-  background: #1976d2;
-  color: #fff;
-  border: none;
-  border-radius: 6px;
-  padding: 0.7em 2em;
-  font-size: 1.1em;
-  cursor: pointer;
+/* Layout containers for robust, responsive map fill */
+.route-navigator-container {
+  display: flex;
+  flex-direction: column;
+  flex: 1 1 0;
+  min-height: 0;
+  height: 100%;
 }
-.exit-fullscreen-btn-global {
-  position: fixed;
-  left: 50%;
-  bottom: 2em;
-  transform: translateX(-50%);
-  background: #c00;
-  color: #fff;
+.map-wrapper {
+  position: relative;
+  flex: 1 1 0;
+  min-height: 0;
+  display: flex;
+  flex-direction: column;
+  height: 100%;
+  width: 100%;
+}
+.map {
+  flex: 1 1 0;
+  min-height: 0;
+  width: 100%;
+  height: 100%;
   border: none;
-  border-radius: 6px;
-  padding: 0.7em 2em;
-  font-size: 1.1em;
-  cursor: pointer;
-  z-index: 2147483647;
-  box-shadow: 0 4px 16px #0008;
+  border-radius: 0;
+  margin: 0;
+  box-shadow: none;
+  overflow: visible;
+}
+/* Floating Action Buttons group for map */
+.map-fab-group {
+  position: absolute;
+  right: 1.5em;
+  bottom: 1.5em;
+  display: flex;
+  flex-direction: column;
+  gap: 0.7em;
+  z-index: 1003;
   pointer-events: auto;
-  outline: 3px solid #fff;
-  outline-offset: -2px;
-  opacity: 0.98;
-  max-width: 90vw;
-  transition: opacity 0.2s;
-  display: block;
+  align-items: flex-end;
 }
-.error {
+.map-fab {
+  box-shadow: 0 4px 16px #1976d233;
+}
+.map-fab[aria-label] {
+  min-width: 0;
+  min-height: 0;
+  width: 56px;
+  height: 56px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+.map-error-fab {
+  position: absolute;
+  left: 50%;
+  bottom: 5.5em;
+  transform: translateX(-50%);
+  background: #fff;
   color: #c00;
-  text-align: center;
-  margin-top: 1em;
+  border-radius: 8px;
+  box-shadow: 0 4px 16px #0002;
+  padding: 0.7em 1.5em;
+  z-index: 1004;
+  display: flex;
+  align-items: center;
+  font-size: 1.1em;
+  pointer-events: auto;
+}
+.map-error-msg mat-icon {
+  margin-right: 0.5em;
 }

@@ -26,16 +26,28 @@ export class RoutePrevisualizationComponent implements OnInit {
 
   constructor(public gpxService: GpxService, private router: Router) {}
 
-  clearGpx() {
-    this.gpxService.clear();
-    this.router.navigate(['/']);
+  async clearGpx() {
+    try {
+      await this.gpxService.clear();
+      this.gpxData = null;
+      this.gpxInfo = null;
+      this.router.navigate(['/']);
+    } catch (e) {
+      // Optionally show an error message
+      console.error('Error clearing GPX data:', e);
+    }
   }
 
-  ngOnInit() {
-    this.gpxService.gpxData$.subscribe(data => {
+  async ngOnInit() {
+    try {
+      const data = await this.gpxService.loadFromLocalStorage();
       this.gpxData = data;
       this.gpxInfo = data ? this.parseGpxInfo(data) : null;
-    });
+    } catch (e) {
+      this.gpxData = null;
+      this.gpxInfo = null;
+      console.error('Error loading GPX data:', e);
+    }
   }
 
   private parseGpxInfo(gpx: string): GpxInfo {
